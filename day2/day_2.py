@@ -26,7 +26,7 @@ def get_rgb_triple(game_set):
         'green', 0), color_dict.get('blue', 0))
 
 
-def convert_to_dict_item(game_number, game_sets):
+def get_dict_item(game_number, game_sets):
     values = []
     for game_set in game_sets:
         values.append(get_rgb_triple(game_set))
@@ -39,9 +39,7 @@ def get_clean_data():
     with request.urlopen(req) as f:
         for index, line in enumerate(f.readlines()):
             line = line.decode('utf-8').strip()
-            # Add 1 because game number starts at 1, not 0
-            game_key = index + 1
-            games.update(convert_to_dict_item(game_key, get_clean_line(line)))
+            games.update(get_dict_item(index + 1, get_clean_line(line)))
     return games
 
 
