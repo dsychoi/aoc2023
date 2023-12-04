@@ -2,7 +2,7 @@ from urllib import request
 from collections import deque
 from dotenv import load_dotenv
 import os
-import re
+import time
 load_dotenv()
 
 url = 'https://adventofcode.com/2023/day/4/input'
@@ -52,6 +52,8 @@ test_game = [line.strip() for line in test_game]
 
 
 def get_total_scratchcards():
+    t0 = time.time()
+
     input = get_input()
     total_cards = len(input)
     matches = [0] * total_cards
@@ -71,8 +73,39 @@ def get_total_scratchcards():
             if next_card_index < total_cards:
                 cards_to_process.append(next_card_index)
 
+    t1 = time.time()
+    print('Deque time:', t1 - t0, 'seconds')
     return total_scratchcards
+
+# Chi's solution
+
+
+def total_scratchcards(cards):
+    t0 = time.time()
+    total_cards = len(cards)
+    card_counts = {i: 1 for i in range(1, total_cards + 1)}
+
+    for i in range(total_cards):
+        card_id = i + 1
+        card_count = card_counts[card_id]
+
+        line = cards[i]
+        winning_set, card_set = parse_card(line)
+        winners = len(winning_set.intersection(card_set))
+
+        next_card = card_id + 1
+        for won in range(next_card, next_card + winners):
+            if won in card_counts:
+                card_counts[won] += card_count
+
+    t1 = time.time()
+    print('Dict time:', t1 - t0, 'seconds')
+    return sum(card_counts.values())
 
 
 print('Part 1:', get_total_points())
-print('Part 2:', get_total_scratchcards())
+# print('Part 2 deque:', get_total_scratchcards())
+# print('Part 2 dict:', total_scratchcards(get_input()))
+
+get_total_scratchcards()
+total_scratchcards(get_input())
