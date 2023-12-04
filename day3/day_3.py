@@ -21,18 +21,6 @@ def get_schematic():
     return schematic
 
 
-# def sum_of_part_numbers(schematic):
-#     valid_symbols = "!@#$%^&*()_-+={}[]"
-
-#     for i, row in enumerate(schematic):
-#         left = 0
-#         right = 0
-#         for j, column in enumerate(row):
-#             if column.isdigit():
-#                 left = j
-#                 break
-
-
 def sum_part_numbers(schematic):
     symbols = {'@', '#', '*', '%', '&', '-', '+',
                '=', '{', '}', '[', ']', '$', '/'}
