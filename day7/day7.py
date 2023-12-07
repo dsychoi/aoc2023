@@ -66,9 +66,9 @@ def solve():
     input = get_new_input()
     winnings = 0
     for index, line in enumerate(input):
-        print(index + 1, line[2], line[0], line[3])
+        # print(index + 1, line[2], line[0], line[3])
         winnings += (index + 1) * int(line[1])
     return winnings
 
 
-print(solve())
+print(f'Part 1: ${solve()}')
