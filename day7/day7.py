@@ -81,7 +81,11 @@ def get_new_input_joker():
         strengths = dict(Counter(line[0]))
         twos_count = sum(1 for value in strengths.values() if value == 2)
         joker_count = strengths.get('J', 0)
-        highest_count = max(strengths.values())
+        
+        # Exclude 'J' from the strengths dictionary before calculating highest_count
+        if 'J' in strengths:
+            del strengths['J']
+        highest_count = max(strengths.values(), default=0)
 
         if (highest_count + joker_count) >= 5:  # 5 of a kind
             line.append(7)
