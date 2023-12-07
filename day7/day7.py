@@ -62,6 +62,10 @@ def get_new_input():
     return input
 
 
+card_values_joker = {'A': 13, 'K': 12, 'Q': 11, 'T': 10,
+                     '9': 9, '8': 8, '7': 7, '6': 6, '5': 5, '4': 4, '3': 3, '2': 2, 'J': 1}
+
+
 def solve():
     input = get_new_input()
     winnings = 0
@@ -71,4 +75,42 @@ def solve():
     return winnings
 
 
+def get_new_input_joker():
+    input = get_input()
+    for line in input:
+        strengths = dict(Counter(line[0]))
+        twos_count = sum(1 for value in strengths.values() if value == 2)
+        joker_count = strengths.get('J', 0)
+        highest_count = max(strengths.values())
+
+        if (highest_count + joker_count) >= 5:  # 5 of a kind
+            line.append(7)
+        elif (highest_count + joker_count) == 4:  # 4 of a kind
+            line.append(6)
+        elif (3 in strengths.values() and 2 in strengths.values()) or (twos_count == 2 and joker_count == 1):  # full house
+            line.append(5)
+        elif (highest_count + joker_count) == 3:  # 3 of a kind
+            line.append(4)
+        elif (twos_count == 2) or (twos_count == 1 and joker_count == 1):  # 2 pairs
+            line.append(3)
+        elif (twos_count == 1) or (joker_count == 1):  # 1 pair
+            line.append(2)
+        else:  # high card
+            line.append(1)
+        line.append([card_values_joker[card] for card in line[0]])
+    input.sort(key=lambda x: (-x[2], [-i for i in x[3]]), reverse=True)
+
+    return input
+
+
+def solve_joker():
+    input = get_new_input_joker()
+    winnings = 0
+    for index, line in enumerate(input):
+        print(index + 1, line[2], line[0], line[3])
+        winnings += (index + 1) * int(line[1])
+    return winnings
+
+
 print(f'Part 1: ${solve()}')
+print(f'Part 2: ${solve_joker()}')
